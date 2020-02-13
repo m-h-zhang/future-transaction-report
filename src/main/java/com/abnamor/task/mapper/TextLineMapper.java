@@ -41,18 +41,13 @@ public class TextLineMapper implements Mapper<String, FutureTransaction> {
 	
 	private String mapFieldValue( String line, String columnName ) {
 		
-		InputColumn inputColumn = getInpuColumns().getInputColumn( columnName );
+		InputColumn inputColumn = this.inputColumns.getInputColumn( columnName );
 		if ( inputColumn == null ) {
-			String errorMessage = "Failed to map column [" + columnName + "] from inputColumns in ReportLineMapper, inputColumns:  "  + getInpuColumns();
+			String errorMessage = "Failed to map column [" + columnName + "] from inputColumns in ReportLineMapper, inputColumns:  "  + this.inputColumns;
 			LOGGER.error ( errorMessage);
 			throw new RuntimeException( errorMessage );			
 		}else {
 			return StringUtils.trimToEmpty(line.substring( inputColumn.getStartIndex(), inputColumn.getStartIndex() + inputColumn.getLength() ));
 		}		
 	}
-	
-	protected InputColumns getInpuColumns() {
-		return this.inputColumns;
-	}
-
 }

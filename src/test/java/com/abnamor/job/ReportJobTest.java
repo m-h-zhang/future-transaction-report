@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.abnamor.task.aggregator.FutureTransactionAggregator;
+import com.abnamor.task.mapper.InputColumns;
 import com.abnamor.task.mapper.TextLineMapper;
 import com.abnamor.task.processor.TransactionReportProcessor;
 import com.abnamor.task.reader.TextFileReader;
@@ -32,11 +33,15 @@ class ReportJobTest {
 		outputFile = new File(outputFileName);
 		if (outputFile.exists()) {
 			outputFile.delete();
-		}
-		ReflectionTestUtils.setField(reportJob, "inputFileName", "input/input.txt" );
+		}	
+		ReflectionTestUtils.setField(reportJob, "inputFileName", "input.txt" );
 		ReflectionTestUtils.setField(reportJob, "outputFileName",  outputFileName);
-		ReflectionTestUtils.setField(reportJob, "fileReader", new TextFileReader() );
-		ReflectionTestUtils.setField(reportJob, "lineMapper", new TextLineMapper () );
+		ReflectionTestUtils.setField(reportJob, "fileReader", new TextFileReader() );		
+		TextLineMapper textLineMapper = new TextLineMapper();
+		InputColumns inputColumns =  new InputColumns("input/input_columns.txt", ",");				
+		ReflectionTestUtils.setField(textLineMapper, "inputColumns", inputColumns );
+		ReflectionTestUtils.setField(reportJob, "lineMapper",  textLineMapper);
+		
 		ReflectionTestUtils.setField(reportJob, "aggregator", new FutureTransactionAggregator() );
 		
 		TransactionReportProcessor transactionReportProcessor = new TransactionReportProcessor();		 
@@ -70,9 +75,11 @@ class ReportJobTest {
 		 assertTrue(outputFile.exists());
 		 assertTrue( outputFile.length() > 0);
 		 
+		 
+		 
 		 try( BufferedReader bufferedReader = new BufferedReader( new FileReader(outputFile))){	   
 			 assertEquals("c1,c2,c3,", bufferedReader.readLine() );
-			 //assertEquals("CL-4321-0002-0001,0002-4321-0002-0001,-100,", bufferedReader.readLine() );
+			 assertEquals("CL-4321-0002-0001,SGX-4321-0002-0001,12,", bufferedReader.readLine() );
 		 }
 		  
 		  

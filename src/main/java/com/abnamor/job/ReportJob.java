@@ -56,7 +56,8 @@ public class ReportJob implements Job<InputStream, File> {
 				FutureTransaction futureTransaction = lineMapper.map(line);
 				aggregator.aggregate(futureTransaction);
 			} catch (Exception e) {
-
+				LOGGER.error("failed to aggregate the line: " + line, e);
+				throw new RuntimeException(e);
 			}
 		});
 

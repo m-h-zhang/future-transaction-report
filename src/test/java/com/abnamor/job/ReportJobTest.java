@@ -79,7 +79,7 @@ class ReportJobTest {
 		 
 		 try( BufferedReader bufferedReader = new BufferedReader( new FileReader(outputFile))){	   
 			 assertEquals("c1,c2,c3,", bufferedReader.readLine() );
-			 assertEquals("CL-4321-0002-0001,SGX-4321-0002-0001,12,", bufferedReader.readLine() );
+			 assertEquals("CL-4321-0002-0001,SGX-FU-NK-20100910,12,", bufferedReader.readLine() );
 		 }
 		  
 		  

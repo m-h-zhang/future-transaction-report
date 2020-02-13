@@ -67,7 +67,7 @@ public class FutureTransactionKey {
  
 	
 	public String getProductInfo() {
-		return this.exchangeCode + "-" + this.clientNumber + "-" + this.accountNumber + "-" +  this.subAccountNumber;
+		return this.exchangeCode + "-" + this.productGroupCode + "-" + this.symbol + "-" +  this.expirationDate;
 	}
 	
 	public String getClientProductInfo() {

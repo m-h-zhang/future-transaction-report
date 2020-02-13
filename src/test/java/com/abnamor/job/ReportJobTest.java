@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import com.abnamor.task.aggregator.FutureTransactionAggregator;
-import com.abnamor.task.mapper.InputColumns;
 import com.abnamor.task.mapper.TextLineMapper;
 import com.abnamor.task.processor.TransactionReportProcessor;
 import com.abnamor.task.reader.TextFileReader;
@@ -34,12 +33,11 @@ class ReportJobTest {
 		if (outputFile.exists()) {
 			outputFile.delete();
 		}	
+		
 		ReflectionTestUtils.setField(reportJob, "inputFileName", "input.txt" );
 		ReflectionTestUtils.setField(reportJob, "outputFileName",  outputFileName);
 		ReflectionTestUtils.setField(reportJob, "fileReader", new TextFileReader() );		
-		TextLineMapper textLineMapper = new TextLineMapper();
-		InputColumns inputColumns =  new InputColumns("input/input_columns.txt", ",");				
-		ReflectionTestUtils.setField(textLineMapper, "inputColumns", inputColumns );
+		TextLineMapper textLineMapper = new TextLineMapper(); 				
 		ReflectionTestUtils.setField(reportJob, "lineMapper",  textLineMapper);
 		
 		ReflectionTestUtils.setField(reportJob, "aggregator", new FutureTransactionAggregator() );
@@ -52,6 +50,8 @@ class ReportJobTest {
 		ReflectionTestUtils.setField(csWriter, "columnBreak", "," ); 
 		ReflectionTestUtils.setField(csWriter, "lineBreak", "\n" );		
 		ReflectionTestUtils.setField(reportJob, "reportWriter", csWriter ); 
+		
+	 
 
 	}
 

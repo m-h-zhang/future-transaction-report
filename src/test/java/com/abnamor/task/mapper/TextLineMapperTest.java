@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import com.abnamor.model.FutureTransaction;
 
@@ -22,11 +21,9 @@ public class TextLineMapperTest {
 	private String line;
 	
 	@BeforeEach
-	public void setUp() throws Exception {
-		
-		InputColumns inputColumns =  new InputColumns("input/input_columns.txt", ",");		
-		textLineMapper = new TextLineMapper();		
-		ReflectionTestUtils.setField(textLineMapper, "inputColumns", inputColumns );
+	public void setUp() throws Exception {		
+		 
+		textLineMapper = new TextLineMapper();			 
 		
 		line = "315CL  432100020001SGXDC FUSGX NK    20100910JPY01B 0000000001 0000000000000000000060DUSD000000000030DUSD000000000000DJPY201008200012380     688032000092500000000             O";
 	}

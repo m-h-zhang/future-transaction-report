@@ -1,8 +1,8 @@
 package com.abnamor.task.mapper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.abnamor.model.FutureTransaction;
@@ -13,41 +13,35 @@ import com.abnamor.model.FutureTransactionKey;
 public class TextLineMapper implements Mapper<String, FutureTransaction> {	
 	 
 
-	@Autowired
-	private InputColumns inputColumns;
 	
-	private final static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(TextLineMapper.class);
+	private final static Logger LOGGER = LoggerFactory.getLogger(TextLineMapper.class);
 	
 	@Override
 	public FutureTransaction map(String line) throws Exception {
 	
-		FutureTransactionKey futureTransactionKey = new FutureTransactionKey(mapFieldValue(line,"CLIENT_TYPE"), 
-				                                                             mapFieldValue(line,"CLIENT_NUMBER"), 
-				                                                             mapFieldValue(line,"ACCOUNT_NUMBER"), 
-				                                                             mapFieldValue(line,"SUBACCOUNT_NUMBER"), 
-				                                                             mapFieldValue(line,"EXCHANGE_CODE"),
-				                                                             mapFieldValue(line,"PRODUCT_GROUP_CODE"),
-				                                                             mapFieldValue(line,"SYMBOL"), 
-				                                                             mapFieldValue(line,"EXPIRATION_DATE")) ;
+		FutureTransactionKey futureTransactionKey = new FutureTransactionKey(   getValue(line, InputColumn.CLIENT_TYPE), 
+																				getValue(line, InputColumn.CLIENT_NUMBER), 
+																				getValue(line, InputColumn.ACCOUNT_NUMBER), 
+																				getValue(line, InputColumn.SUBACCOUNT_NUMBER),  
+																				getValue(line, InputColumn.EXCHANGE_CODE),
+																				getValue(line, InputColumn.PRODUCT_GROUP_CODE),
+																				getValue(line, InputColumn.SYMBOL),
+																				getValue(line, InputColumn.EXPIRATION_DATE) ) ;
 		
-		String strQuantityLong = mapFieldValue(line,"QUANTITY_LONG");		
+		String strQuantityLong = getValue(line, InputColumn.QUANTITY_LONG);		
 		long quantityLong = StringUtils.isBlank(strQuantityLong) ? 0 : Integer.parseInt(strQuantityLong);
-		String strQuantityShort = mapFieldValue(line,"QUANTITY_SHORT");		
+		String strQuantityShort = getValue(line, InputColumn.QUANTITY_SHORT);	;		
 		long quantityShort = StringUtils.isBlank(strQuantityShort) ? 0 : Integer.parseInt(strQuantityShort);			
 		FutureTransaction futureTransaction = new FutureTransaction(futureTransactionKey, quantityLong, quantityShort);	
 		LOGGER.info( "Mapped  line string [" + line + "] to  futureTransaction :" + futureTransaction.toString() );
 		return futureTransaction;
 	}
 	
-	private String mapFieldValue( String line, String columnName ) {
+	
+	
+	private String getValue( String line, InputColumn inputColumn ) {
 		
-		InputColumn inputColumn = this.inputColumns.getInputColumn( columnName );
-		if ( inputColumn == null ) {
-			String errorMessage = "Failed to map column [" + columnName + "] from inputColumns in ReportLineMapper, inputColumns:  "  + this.inputColumns;
-			LOGGER.error ( errorMessage);
-			throw new RuntimeException( errorMessage );			
-		}else {
-			return StringUtils.trimToEmpty(line.substring( inputColumn.getStartIndex(), inputColumn.getStartIndex() + inputColumn.getLength() ));
-		}		
+		return line.substring(inputColumn.getStartIndex(), inputColumn.getEndIndex()).trim();
 	}
+		
 }

@@ -47,8 +47,13 @@ It needs  maven 3.3 or above  and JDK 9 or above.
  3.5. Lastly the job will call writer to write the report object to csv output file.
  
 4. TODO list
-  It is a little bit rush for this version in a short time and it can just meet the requirement.  However there are some places which can be better.
+  It is a little bit rush for this version in a short timeframe and it can just meet the requirement.  However there are some places        which can do better in the next version.
  
-    4.1. unit test case
+  4.1. unit test case
     The Unit test cases just covered the happy sceniros and need to add more error scenarios and boundary cases.
+  4.2. Exception Handling
+    At the moment, all exceptions would be logged and thrown out to root caller and the application will stop immediately. Exception 
+    handling can be added to process 
+  4.3. Migration to Spring batch for advanced functions 
+    Most classes are POJO classes with spring annotation. It could be very easy to migrate to spring batch for advanced functions.
  

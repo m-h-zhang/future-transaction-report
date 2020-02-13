@@ -2,6 +2,7 @@ package com.abnamor.job;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -11,12 +12,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.abnamor.model.FutureTransaction;
+import com.abnamor.model.FutureTransactionKey;
 import com.abnamor.model.Report;
-import com.abnamor.task.aggregator.FutureTransactionAggregator;
+import com.abnamor.task.aggregator.Aggregator;
 import com.abnamor.task.mapper.Mapper;
-import com.abnamor.task.processor.TransactionReportProcessor;
+import com.abnamor.task.processor.Processor;
 import com.abnamor.task.reader.Reader;
-import com.abnamor.task.writer.CsvWriter;
+import com.abnamor.task.writer.Writer;
 
 @Service
 public class ReportJob implements Job<InputStream, File> {
@@ -28,13 +30,13 @@ public class ReportJob implements Job<InputStream, File> {
 	private Mapper<String, FutureTransaction> lineMapper;
 
 	@Autowired
-	private FutureTransactionAggregator aggregator;
+	private Aggregator<FutureTransaction, Map<FutureTransactionKey, Long>> aggregator;
 
 	@Autowired
-	private TransactionReportProcessor reportProcessor;
+	private Processor<Map<FutureTransactionKey, Long>, Report> reportProcessor;
 
 	@Autowired
-	private CsvWriter reportWriter;
+	private Writer<Report, File> reportWriter;
 	
 	@Value("${input.file.name}")
 	private String inputFileName;

@@ -2,7 +2,9 @@ package com.abnamor.task.processor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.assertj.core.util.Arrays;
@@ -36,12 +38,19 @@ class TransactionReportProcessorTest {
 	@Test
 	void testProcess() throws Exception {
 		Map<FutureTransactionKey, Long> reportDataMap = new HashMap<FutureTransactionKey, Long>();		
-		FutureTransactionKey futureTransactionKey = new FutureTransactionKey("CL", "4321", "0002", "0001", "0002", "SGX", "NK", "20100910");
+		FutureTransactionKey futureTransactionKey = new FutureTransactionKey("CL", "4321", "0002", "0001", "SGX", "FU", "NK", "20100910");
 		reportDataMap.put(futureTransactionKey, -100L);		
 		Report report = transactionReportProcessor.process(reportDataMap);
 		assertEquals(3, report.getHeaders().size());
 		assertEquals(1, report.getData().size());
-		assertEquals(3, report.getData().iterator().next().size());
+		Collection<Object> dataRow = report.getData().iterator().next();
+		assertEquals(3, dataRow.size());	
+		
+		Iterator<Object> dataRowIterator = dataRow.iterator();
+		assertEquals("CL-4321-0002-0001", dataRowIterator.next());
+		assertEquals("SGX-FU-NK-20100910", dataRowIterator.next());
+		assertEquals( - 100L, dataRowIterator.next());
+		
 		
 	}
 

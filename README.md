@@ -46,9 +46,9 @@ It needs  maven 3.3 or above  and JDK 9 or above.
 
  3.5. Lastly the job will call writer to write the report object to csv output file.
  
- 4. TODO list
+4. TODO list
   It is a little bit rush for this version in a short time and it can just meet the requirement.  However there are some places which can be better.
  
- 4.1. unit test case
+    4.1. unit test case
     The Unit test cases just covered the happy sceniros and need to add more error scenarios and boundary cases.
  

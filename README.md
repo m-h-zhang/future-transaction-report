@@ -42,11 +42,11 @@ It needs  maven 3.3 or above  and JDK 9 or above.
 
    When the application starts,  it follows the following workflow.
    
-       3.1. The application triggers a Job, which controls all steps.
+      3.1. The application triggers a Job, which controls all steps.
        
-       3.2. Firstly the Job calls a reader to read the input.txt line by line.
+      3.2. Firstly the Job calls a reader to read the input.txt line by line.
        
-       3.3. For each line, the job will call a line mapper to map the selected data
+      3.3. For each line, the job will call a line mapper to map the selected data
            to a java object based on the data sequence and length in input_columns.txt,
            then aggregate the java object to a map.
       
